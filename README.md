@@ -1,0 +1,244 @@
+[index.html (2).html](https://github.com/user-attachments/files/22758140/index.html.2.html)
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>اعرف قبضك - Jasson</title>
+  <style>
+    /* إخفاء العمود الجانبي (scrollbar) */
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+    body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      color: #fff;
+      direction: rtl;
+      background: linear-gradient(135deg, #232a34 0%, #2b3a4d 100%), url('file:///C:/Users/Grand%20PC/Desktop/R-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.65);
+      z-index: 0;
+    }
+
+    .container {
+      background: rgba(31, 31, 31, 0.92);
+      padding: 50px 40px 40px 40px;
+      border-radius: 30px;
+      width: 100%;
+      max-width: 600px;
+      min-height: 420px;
+      text-align: center;
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.45), 0 1.5px 8px 0 rgba(0,0,0,0.18);
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(2px);
+      transition: box-shadow 0.3s, background 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    img.logo {
+      width: 160px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 2px 8px #00eaff88);
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      color: #00eaff;
+      font-size: 2.1rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #00eaff33;
+    }
+
+    p {
+      margin: 10px 0 25px;
+      color: #bfc9d1;
+      font-size: 16px;
+    }
+
+    input {
+      padding: 15px;
+      width: 95%;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: none;
+      font-size: 18px;
+      background-color: #232a34;
+      color: white;
+      box-shadow: 0 1px 6px #00eaff22;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    input:focus {
+      box-shadow: 0 2px 12px #00eaff55;
+    }
+
+    button {
+      padding: 15px 20px;
+      width: 95%;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(90deg, #00eaff 0%, #00c7d9 100%);
+      color: #000;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #00eaff44;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #00c7d9 0%, #00eaff 100%);
+      box-shadow: 0 4px 16px #00eaff66;
+    }
+
+    #result.result-large {
+      margin-top: 35px;
+      background-color: #232a34;
+      padding: 40px 30px 30px 30px;
+      border-radius: 22px;
+      text-align: right;
+      font-size: 18px;
+      line-height: 2.1;
+      color: #e3eaf1;
+      position: relative;
+      min-height: 320px;
+      box-shadow: 0 4px 24px #00eaff22;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      transition: box-shadow 0.3s, background 0.3s;
+    }
+
+    /* إزالة اللوجو من تفاصيل القبض */
+
+    .tab-list {
+      display: none;
+    }
+    .tab-content {
+      padding: 20px 0 0 0;
+      border-top: 2px solid #00eaff44;
+      min-height: 180px;
+    }
+    .field {
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #00eaff22;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .field-label {
+      font-weight: bold;
+      color: #00eaff;
+      font-size: 17px;
+    }
+    .field-value {
+      color: #ffffff;
+      font-size: 19px;
+      margin-top: 0;
+      font-weight: 500;
+    }
+
+    .net-salary {
+      background: linear-gradient(90deg, #00eaff 0%, #00c7d9 100%);
+      color: #232a34;
+      padding: 22px;
+      margin-top: 35px;
+      font-size: 26px;
+      font-weight: bold;
+      border-radius: 16px;
+      box-shadow: 0 0 18px #00eaff44;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>اعرف قبضك</h2>
+    <p>ادخل الكود الخاص بك</p>
+    <input type="text" id="riderIdInput" placeholder="مثال: 1581933" />
+    <button onclick="searchRider()">عرض القبض</button>
+  <div id="result" class="result-large"></div>
+  </div>
+
+  <script>
+    const sheetId = "1qjsKGmCAMMLtN7uXXEVB-NUuuznzLqc_x40Me0FsmOg";
+    const apiKey = "AIzaSyDdaGJE2te5dEb7MEI1cHVcWF0pPjS-9Ws";
+    const range = "A1:S1000";
+
+    let headers = [];
+    let rows = [];
+
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      headers = data.values[0];
+      rows = data.values.slice(1);
+    }
+
+    function searchRider() {
+      const inputId = document.getElementById("riderIdInput").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      if (!inputId) {
+        resultDiv.innerHTML = "<span style='color: orange;'>من فضلك أدخل الكود أولاً.</span>";
+        return;
+      }
+
+      const match = rows.find(row => row[0] === inputId);
+
+      if (match) {
+        let output = `<div class='tab-content'>`;
+        // صورة ثابتة أعلى التفاصيل
+        output += `<div style='width:100%;text-align:center;margin-bottom:25px;'><img src='c:/Users/Grand PC/Downloads/52a32288-d43d-4330-9032-530b82895ac3.jpeg' alt='Jasson Logo' style='max-width:220px;border-radius:18px;box-shadow:0 2px 12px #00eaff55;'></div>`;
+        // عرض جميع الحقول ما عدا "الكود" و"الاسم" و"الشهر" و"صافي القبض"
+        headers.forEach((head, index) => {
+          const value = match[index] || "-";
+          if (["الكود", "الاسم", "الشهر", "صافي القبض"].includes(head.trim())) return;
+          output += `
+            <div class="field">
+              <div class="field-label">${head}</div>
+              <div class="field-value">${value}</div>
+            </div>
+          `;
+        });
+        // عرض صافي القبض بشكل بارز
+        const netIndex = headers.findIndex(h => h.trim() === "صافي القبض");
+        const netValue = match[netIndex] || "-";
+        output += `<div class='net-salary'>💰 صافي القبض: ${netValue} جنيه</div>`;
+        output += `</div>`;
+        resultDiv.innerHTML = output;
+      } else {
+        resultDiv.innerHTML = "<span style='color: orange;'>لم يتم العثور على الكود.</span>";
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", fetchSheetData);
+  </script>
+</body>
+</html>
