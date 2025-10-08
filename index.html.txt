@@ -1,0 +1,42 @@
+import os
+import sys
+import queue
+import sounddevice as sd
+import vosk
+
+# مسار الموديل اللي نزلته
+model_path = r"C:\Users\Grand PC\Desktop\vosk-model-ar-mgb2-0.4"
+
+
+# تحميل الموديل
+if not os.path.exists(model_path):
+    print("❌ الموديل مش موجود في المسار ده")
+    sys.exit(1)
+
+model = vosk.Model(model_path)
+
+# إعداد الميكروفون
+samplerate = 16000  # Sampling rate
+device = None       # خليها None علشان يختار الميكروفون الافتراضي
+
+q = queue.Queue()
+
+def callback(indata, frames, time, status):
+    if status:
+        print(status, file=sys.stderr)
+    q.put(bytes(indata))
+
+# فتح الميكروفون والتعرف على الكلام
+with sd.RawInputStream(samplerate=samplerate, blocksize=8000, device=device,
+                       dtype='int16', channels=1, callback=callback):
+
+    print("🎤 اتكلم دلوقتي... (Ctrl+C للخروج)")
+
+    rec = vosk.KaldiRecognizer(model, samplerate)
+
+    while True:
+        data = q.get()
+        if rec.AcceptWaveform(data):
+            print("✅ نص كامل:", rec.Result())
+        else:
+            print("🔹 جزئي:", rec.PartialResult())
